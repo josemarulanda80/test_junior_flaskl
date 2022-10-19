@@ -1,0 +1,22 @@
+{% extends './base.html' %}
+{% block contenido  %}
+<table class="table table-bordered m-3" style="width: 98%;">
+    <thead>
+      <tr>
+        <th scope="col">Nombre</th>
+        <th scope="col">Email</th>
+        <th scope="col">Ciudad</th>
+      </tr>
+    </thead>
+    <tbody class="table-group-divider">
+        {% for user in users %}
+        <tr>
+            
+            <td>{{user.nombre}}</td>
+            <td>{{user.email}}</td>
+            <td>{{user.ciudad}}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
