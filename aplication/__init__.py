@@ -1,5 +1,11 @@
-from flask import Flask,render_template,request
+
+from flask_migrate import Migrate
+
+from flask import Flask,render_template,request, session,redirect
 from flask_sqlalchemy import SQLAlchemy
+
+
+
 
 
 app = Flask(__name__)
@@ -7,21 +13,34 @@ app = Flask(__name__)
 #Cargo todas las configuraciones
 
 app.config.from_object('config.DevelopmentConfig')
-
 db = SQLAlchemy(app)
+migrate = Migrate(app, db)
 
 
 
 
-db.create_all()
 
-@app.route('/',methods=['POST'])
+
+
+from aplication.database import User
+
+
+@app.route('/')
+
 def index():
+
+    return render_template('index.html')
+
+@app.route('/registrar',methods=['POST'])
+def registrar():
     nombre=request.form['nombre']
     email = request.form['email']
     ciudad=request.form['ciudad']
-    print(nombre)
-    print(email)
-    print(ciudad)
+    user = User(nombre=nombre,email=email,ciudad=ciudad)
+    db.session.add(user)
+    db.session.commit()
+    return redirect('/')
 
-    return render_template('index.html')
+
+#Esto siempre va abajo  del todo
+db.create_all()
